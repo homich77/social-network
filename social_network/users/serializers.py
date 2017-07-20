@@ -39,6 +39,16 @@ class CreateUserSerializer(serializers.ModelSerializer):
         return self.Meta.model.objects.create_user(**validated_data)
 
 
+class DetailedUserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = (
+            'id', 'first_name', 'last_name', 'email', 'is_active', 'is_staff',
+            'bio', 'site', 'avatar', 'gender',
+        )
+
+
 class SimpleUserSerializer(serializers.ModelSerializer):
 
     class Meta:

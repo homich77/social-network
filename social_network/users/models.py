@@ -26,11 +26,24 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    MALE = 'male'
+    FEMALE = 'female'
+
+    GENDER_CHOICES = (
+        (MALE, 'Male'),
+        (FEMALE, 'Female'),
+    )
+
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=128)
     last_name = models.CharField(max_length=128)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
+    bio = models.TextField(blank=True, null=True)
+    site = models.URLField(blank=True, null=True)
+    avatar = models.URLField(blank=True, null=True)
+    gender = models.CharField(choices=GENDER_CHOICES, max_length=6,
+                              blank=True, null=True)
 
     objects = UserManager()
 
