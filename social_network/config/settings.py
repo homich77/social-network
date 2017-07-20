@@ -1,15 +1,17 @@
 import datetime
-import os
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+import environ
 
+BASE_DIR = environ.Path(__file__) - 2
+
+env = environ.Env()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 SECRET_KEY = '3vp(2uups!961b_vo)tsvxa90pasqsuqnee!c%x!@4aa=2&xq0'
 
-DEBUG = True
+DEBUG = env.bool('DJANGO_DEBUG', True)
 
 ALLOWED_HOSTS = []
 
@@ -75,10 +77,10 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    'default': env.db(
+        'DATABASE_URL',
+        default='sqlite:///' + str(BASE_DIR.path('db.sqlite3'))
+    )
 }
 
 
@@ -148,9 +150,13 @@ JWT_AUTH = {
 
 # Emailhunter
 
-EMAILHUNTER_KEY = 'e07175754f4da96e046e86414dc958b630424fc4'
+EMAILHUNTER_KEY = env(
+    'EMAILHUNTER_KEY', default='e07175754f4da96e046e86414dc958b630424fc4'
+)
 
-EMAILHUNTER_URL = 'https://api.hunter.io/v2/email-verifier'
+EMAILHUNTER_URL = env(
+    'EMAILHUNTER_URL', default='https://api.hunter.io/v2/email-verifier'
+)
 
 EMAILHUNTER_VALID_PARAMS = {
     'mx_records': True,
