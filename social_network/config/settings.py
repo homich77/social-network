@@ -33,7 +33,7 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
-    'users',
+    'users.apps.UsersConfig',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -175,3 +175,10 @@ EMAILHUNTER_VALID_PARAMS = {
     'disposable': False,
     'smtp_check': True,
 }
+
+
+# Clearbit
+
+CLEARBIT_KEY = env(
+    'CLEARBIT_KEY', default='sk_eaac6e9a7fea0cda77c9819432dc7a0d'
+)

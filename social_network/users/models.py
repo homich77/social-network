@@ -1,6 +1,9 @@
+import clearbit
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 from django.db import models
+
+from users.tasks import fill_user_data
 
 
 class UserManager(BaseUserManager):
@@ -11,6 +14,8 @@ class UserManager(BaseUserManager):
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
+
+        fill_user_data.delay(user.pk)
         return user
 
     def create_user(self, email=None, password=None, **extra_fields):
@@ -49,9 +54,19 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']
+    CLEARBIT_FIELDS = ['bio', 'site', 'avatar', 'gender']
 
     def get_short_name(self):
         return self.first_name
 
     def get_full_name(self):
         return self.first_name + ' ' + self.last_name
+
+    def get_data_from_clearbit(self):
+        clearbit_data = clearbit.Enrichment.find(email=self.email, stream=True)
+
+        for field in self.CLEARBIT_FIELDS:
+            if getattr(self, field):
+                setattr(self, field, clearbit_data.get(field))
+
+        self.save()
