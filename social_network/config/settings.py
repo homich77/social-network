@@ -144,3 +144,21 @@ JWT_AUTH = {
     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7),
     'JWT_ALLOW_REFRESH': False,
 }
+
+
+# Emailhunter
+
+EMAILHUNTER_KEY = 'e07175754f4da96e046e86414dc958b630424fc4'
+
+EMAILHUNTER_URL = 'https://api.hunter.io/v2/email-verifier'
+
+EMAILHUNTER_VALID_PARAMS = {
+    'mx_records': True,
+    'smtp_server': True,
+    'gibberish': False,
+    'accept_all': False,
+    'webmail': False,
+    'regexp': True,
+    'disposable': False,
+    'smtp_check': True,
+}
