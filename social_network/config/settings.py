@@ -148,6 +148,13 @@ JWT_AUTH = {
 }
 
 
+# Celery
+
+BROKER_URL = env('BROKER_URL', default='redis://localhost:6379/1')
+
+CELERY_RESULT_BACKEND = env('CELERY_RESULT_BACKEND', default=BROKER_URL)
+
+
 # Emailhunter
 
 EMAILHUNTER_KEY = env(

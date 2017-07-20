@@ -3,3 +3,5 @@ django-rest-auth==0.9.1
 djangorestframework==3.6.3
 djangorestframework-jwt==1.11.0
 django-environ==0.4.3
+celery==4.0.2
+redis==2.10.5
