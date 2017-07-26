@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from posts.models import Post
-from posts.permissions import IsStaffOrAuthor
+from posts.permissions import IsStaffOrAuthor, NotAuthor
 from posts.serializers import PostSerializer, PostWithLikesSerializer
 
 
@@ -19,14 +19,16 @@ class PostViewSet(ModelViewSet):
 
         return self.serializer_class
 
-    @detail_route(methods=['POST'], permission_classes=[IsAuthenticated])
+    @detail_route(methods=['POST'],
+                  permission_classes=(IsAuthenticated, NotAuthor))
     def like(self, request, pk=None):
         post = self.get_object()
         post.likes.add(request.user)
         serializer = self.get_serializer(post)
         return Response(serializer.data)
 
-    @detail_route(methods=['POST'], permission_classes=[IsAuthenticated])
+    @detail_route(methods=['POST'],
+                  permission_classes=(IsAuthenticated, NotAuthor))
     def unlike(self, request, pk=None):
         post = self.get_object()
         post.likes.remove(request.user)
