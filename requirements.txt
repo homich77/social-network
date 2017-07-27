@@ -8,3 +8,4 @@ redis==2.10.5
 clearbit==0.1.6
 factory-boy==2.8.1
 Faker==0.7.18
+async-timeout==1.2.1
