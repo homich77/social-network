@@ -6,3 +6,5 @@ django-environ==0.4.3
 celery==4.0.2
 redis==2.10.5
 clearbit==0.1.6
+factory-boy==2.8.1
+Faker==0.7.18
